@@ -1,6 +1,7 @@
 package org.example.nhanhkimsonspringhomework003.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.example.nhanhkimsonspringhomework003.model.Attendee;
 import org.example.nhanhkimsonspringhomework003.model.request.AttendeeRequest;
 import org.example.nhanhkimsonspringhomework003.model.response.ApiResponse;
@@ -21,6 +22,7 @@ public class AttendeeController {
     }
 
     @PostMapping
+    @Operation(summary = "Create new attendee")
     ResponseEntity<ApiResponse<List<Attendee>>> createNewAttendee(@RequestBody AttendeeRequest attendeeRequest) {
         ApiResponse<List<Attendee>> createNewAttendee = ApiResponse.<List<Attendee>>builder()
                 .message("New attendee was created successfully!")
@@ -32,7 +34,8 @@ public class AttendeeController {
     }
 
     @PutMapping("{attendee-id}")
-    ResponseEntity<ApiResponse<List<Attendee>>> updateNewAttendee(
+    @Operation(summary = "Update attendee")
+    ResponseEntity<ApiResponse<List<Attendee>>> updateAttendee(
             @PathVariable("attendee-id") Integer attendeeId,
             @RequestBody AttendeeRequest attendeeRequest) {
         ApiResponse<List<Attendee>> createNewAttendee = ApiResponse.<List<Attendee>>builder()
@@ -45,6 +48,7 @@ public class AttendeeController {
     }
 
     @DeleteMapping("{attendee-id}")
+    @Operation(summary = "Delete attendee")
     ResponseEntity<ApiResponse<List<Attendee>>> deleteNewAttendee(
             @PathVariable("attendee-id") Integer attendeeId)
     {
@@ -58,6 +62,7 @@ public class AttendeeController {
     }
 
     @GetMapping("{attendee-id}")
+    @Operation(summary = "Select attendee by id")
     ResponseEntity<ApiResponse<List<Attendee>>> getAttendeeById(
             @PathVariable("attendee-id") Integer attendeeId)
     {
@@ -71,6 +76,7 @@ public class AttendeeController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all attendee")
     ResponseEntity<ApiResponse<List<Attendee>>> getAllAttendee(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size)

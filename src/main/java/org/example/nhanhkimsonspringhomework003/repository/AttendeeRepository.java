@@ -49,9 +49,20 @@ public interface AttendeeRepository {
 
     @Select("""
     SELECT * FROM attendees
-    OFFSET #{size} * (#{page} -1)
-    limit #{size};
+    LIMIT #{size} OFFSET #{size} * (#{page} - 1);
     """)
     @ResultMap("attendeeMapper")
     List<Attendee> getAllAttendee(Integer page, Integer size);
+
+    @Select("""
+            SELECT * FROM attendees\s
+            INNER JOIN event_attendee ea ON attendees.attendee_id = ea.attendee_id
+            WHERE ea.event_id = #{eventId};
+    """)
+    @Results(id = "attendeeEvenMapper", value = {
+            @Result(property = "attendeeId", column = "attendee_id"),
+            @Result(property = "attendeeName", column = "attendee_name"),
+            @Result(property = "email", column = "email")
+    })
+    List<Attendee> getAttendeeByEventId(Integer eventId);
 }
