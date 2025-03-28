@@ -14,7 +14,7 @@ import java.util.List;
 public class EventRequest {
     private String eventName;
     private String eventDate;
-    private String venueId;
+    private Integer venueId;
     private List<Integer> attendees;
 
 }

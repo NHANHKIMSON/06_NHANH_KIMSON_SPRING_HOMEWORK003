@@ -4,6 +4,7 @@ package org.example.nhanhkimsonspringhomework003.repository;
 import org.apache.ibatis.annotations.*;
 import org.example.nhanhkimsonspringhomework003.model.Attendee;
 import org.example.nhanhkimsonspringhomework003.model.request.AttendeeRequest;
+import org.example.nhanhkimsonspringhomework003.model.request.EventRequest;
 
 import java.util.List;
 @Mapper
@@ -65,4 +66,16 @@ public interface AttendeeRepository {
             @Result(property = "email", column = "email")
     })
     List<Attendee> getAttendeeByEventId(Integer eventId);
+
+
+    @Select("""
+    DELETE from event_attendee WHERE event_id = ${eventId};
+    """)
+    void deleteAttendeeEvent(Integer eventId);
+
+
+    @Select("""
+    INSERT INTO event_attendee VALUES (default, #{attendeeId}, #{eventId})
+    """)
+    void insertAttendeeEvent(Integer attendeeId, Integer eventId);
 }

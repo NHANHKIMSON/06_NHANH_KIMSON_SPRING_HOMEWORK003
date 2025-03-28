@@ -2,6 +2,7 @@ package org.example.nhanhkimsonspringhomework003.repository;
 
 import org.apache.ibatis.annotations.*;
 import org.example.nhanhkimsonspringhomework003.model.Event;
+import org.example.nhanhkimsonspringhomework003.model.request.EventRequest;
 
 import java.util.List;
 
@@ -30,7 +31,27 @@ public interface EventRepository {
 
     @Select("""
     DELETE FROM events WHERE event_id = #{eventId}
+    RETURNING *
     """)
     @ResultMap("EventMapper")
     List<Event> deleteEventById(Integer eventId);
+
+
+    @Select("""
+    INSERT INTO events (event_name, event_date,venue_id)
+    VALUES (#{eventRequest.eventName}, #{eventRequest.eventDate}, #{eventRequest.venueId})
+    RETURNING *
+    """)
+    @ResultMap("EventMapper")
+    Event creteNewEvent(@Param("eventRequest") EventRequest eventRequest);
+
+
+
+    @Select("""
+    UPDATE events  SET event_name = #{eventRequest.eventName}, event_date = #{eventRequest.eventDate} ,venue_id = #{eventRequest.venueId}
+    WHERE event_id = #{eventId}
+    RETURNING *
+    """)
+    @ResultMap("EventMapper")
+    Event updateEvent(Integer eventId, @Param("eventRequest") EventRequest eventRequest);
 }

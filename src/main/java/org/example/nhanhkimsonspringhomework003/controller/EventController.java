@@ -4,6 +4,7 @@ package org.example.nhanhkimsonspringhomework003.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.example.nhanhkimsonspringhomework003.model.Event;
+import org.example.nhanhkimsonspringhomework003.model.request.EventRequest;
 import org.example.nhanhkimsonspringhomework003.model.response.ApiResponse;
 import org.example.nhanhkimsonspringhomework003.service.EventService;
 import org.springframework.http.HttpStatus;
@@ -63,4 +64,33 @@ public class EventController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @PostMapping
+    @Operation(summary = "Create new event")
+    ResponseEntity<ApiResponse<List<Event>>> createEvent(
+            @RequestBody EventRequest eventRequest
+    ){
+        ApiResponse<List<Event>> apiResponse = ApiResponse.<List<Event>>builder()
+                .message("New event was created successfully")
+                .payload(eventService.createNewEvent(eventRequest))
+                .status(HttpStatus.CREATED)
+                .time(LocalDateTime.now())
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
+
+
+    @PutMapping({"{event-id}"})
+    @Operation(summary = "Event was updated successfully")
+    ResponseEntity<ApiResponse<List<Event>>> updateEvent(
+            @PathVariable("event-id") Integer eventId,
+            @RequestBody EventRequest eventRequest
+    ){
+        ApiResponse<List<Event>> apiResponse = ApiResponse.<List<Event>>builder()
+                .message("New event was created successfully")
+                .payload(eventService.updateEvent(eventId, eventRequest))
+                .status(HttpStatus.OK)
+                .time(LocalDateTime.now())
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
 }
