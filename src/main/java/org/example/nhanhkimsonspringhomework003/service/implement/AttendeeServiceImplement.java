@@ -1,10 +1,18 @@
 package org.example.nhanhkimsonspringhomework003.service.implement;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import lombok.SneakyThrows;
+import org.example.nhanhkimsonspringhomework003.exception.NotFoundException;
 import org.example.nhanhkimsonspringhomework003.model.Attendee;
 import org.example.nhanhkimsonspringhomework003.model.request.AttendeeRequest;
 import org.example.nhanhkimsonspringhomework003.repository.AttendeeRepository;
 import org.example.nhanhkimsonspringhomework003.service.AttendeeService;
+import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 
@@ -32,11 +40,18 @@ public class AttendeeServiceImplement implements AttendeeService {
 
     @Override
     public List<Attendee> getAttendeeById(Integer attendeeId) {
-        return attendeeRepository.getAttendeeById(attendeeId);
+        List<Attendee> attendees = attendeeRepository.getAttendeeById(attendeeId);
+        if (attendees.isEmpty()) {
+            throw new NotFoundException("Attendee not found");
+        }
+        return attendees;
     }
 
+
     @Override
-    public List<Attendee> getAllAttendee(Integer page, Integer size) {
+    public List<Attendee> getAllAttendee(
+            Integer page,
+            Integer size) {
         return attendeeRepository.getAllAttendee(page, size);
     }
 }

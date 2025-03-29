@@ -2,8 +2,10 @@ package org.example.nhanhkimsonspringhomework003.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.example.nhanhkimsonspringhomework003.model.Attendee;
 import org.example.nhanhkimsonspringhomework003.model.request.AttendeeRequest;
+import org.example.nhanhkimsonspringhomework003.model.request.PaginationRequest;
 import org.example.nhanhkimsonspringhomework003.model.response.ApiResponse;
 import org.example.nhanhkimsonspringhomework003.service.AttendeeService;
 import org.springframework.http.HttpStatus;
@@ -77,16 +79,17 @@ public class AttendeeController {
 
     @GetMapping
     @Operation(summary = "Get all attendee")
+
     ResponseEntity<ApiResponse<List<Attendee>>> getAllAttendee(
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer size)
+            @Valid PaginationRequest paginationRequest
+    )
     {
         ApiResponse<List<Attendee>> createNewAttendee = ApiResponse.<List<Attendee>>builder()
                 .message("Attendee was selected successfully!")
-                .payload(attendeeService.getAllAttendee(page, size))
-                .status(HttpStatus.CREATED)
+                .payload(attendeeService.getAllAttendee( paginationRequest.getPage(), paginationRequest.getSize()))
+                .status(HttpStatus.OK)
                 .time(LocalDateTime.now())
                 .build();
-        return ResponseEntity.status(HttpStatus.CREATED).body(createNewAttendee);
+        return ResponseEntity.status(HttpStatus.OK).body(createNewAttendee);
     }
 }
